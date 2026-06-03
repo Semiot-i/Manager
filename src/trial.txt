@@ -1,0 +1,87 @@
+#include <stdio.h>
+
+int Menu_display();
+void Create();
+void Prune();
+void Delete();
+void Search();
+void Preview();
+void Save();
+
+int main()
+{
+    int Macro_choice;
+    do
+    {
+        Macro_choice = Menu_display();
+        if (Macro_choice == 1)
+        {
+            Create();
+        }
+        else if (Macro_choice == 2)
+        {
+            Prune();
+        }
+        else if (Macro_choice == 3)
+        {
+            Delete();
+        }
+        else if (Macro_choice == 4)
+        {
+            Search();
+        }
+        else if (Macro_choice != 0)
+        {
+            printf("Invalid input!\n");
+        }
+    } while (Macro_choice != 0);
+    return 0;
+}
+
+int Menu_display()
+{
+    int choice = 0;
+    printf("\n========================================\n");
+    printf("Welcome to use this Program.\n");
+    printf("Please input correspond number to order the program:\n");
+    printf(" 1. Create\n");
+    printf(" 2. Prune\n");
+    printf(" 3. Delete\n");
+    printf(" 4. Search\n");
+    printf(" 0. Quit\n");
+    printf("========================================\n");
+    printf("Your choice: ");
+    fflush(stdout);
+
+    if (scanf("%d", &choice) != 1)
+    {
+        while (getchar() != '\n');
+        choice = -1;
+    }
+
+    return choice;
+}
+
+void Create()
+{
+    printf(">> Created successfully!\n");
+    fflush(stdout);
+}
+
+void Prune()
+{
+    printf(">> Pruned successfully!\n");
+    fflush(stdout);
+}
+
+void Delete()
+{
+    printf(">> Deleted successfully!\n");
+    fflush(stdout);
+}
+
+void Search()
+{
+    printf(">> Searched successfully!\n");
+    fflush(stdout);
+}
