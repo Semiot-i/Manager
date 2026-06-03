@@ -1,0 +1,24 @@
+StudentInfoSystem/
+├── src/
+│   ├── main.c                    # 程序入口
+│   ├── app/                      # 应用层
+│   │   ├── app_window.c/h        # 主窗口管理
+│   │   ├── file_browser.c/h      # 文件浏览界面
+│   │   ├── student_editor.c/h    # 学生信息编辑界面
+│   │   └── settings.c/h          # 设置界面
+│   ├── core/                     # 核心业务层
+│   │   ├── student.c/h           # 学生数据结构与操作
+│   │   ├── student_list.c/h      # 学生列表管理
+│   │   ├── file_manager.c/h      # 文件读写操作
+│   │   └── command.c/h           # 命令模式(撤销/重做)
+│   ├── utils/                    # 工具层
+│   │   ├── config.c/h            # 配置文件管理
+│   │   ├── validator.c/h         # 数据验证
+│   │   └── thread_pool.c/h       # 简易线程池(假并发)
+│   └── include/                  # 公共头文件
+│       └── common.h
+├── resources/                    # UI资源文件
+│   └── style.css
+├── data/                         # 数据文件存储
+├── Makefile                      # 编译脚本
+└── README.md
