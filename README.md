@@ -64,7 +64,7 @@ StudentInfoSystem/
               ▼                ▼                ▼
       ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
       │    app/      │ │    core/     │ │   utils/     │
-      │  (应用层)     │ │  (核心业务层) │ │  (工具层)     │
+      │  (应用层)     │ │ (核心业务层) │  │  (工具层)    │
       └──────┬───────┘ └──────┬───────┘ └──────┬───────┘
              │                │                │
              │                ▼                │
@@ -136,73 +136,7 @@ src/utils/*.c ────────────────┘
 
 ---
 
-## ❗ 常见问题速查
-
-### 问题 1：`#include "common.h"` 报错 🔴
-
-**现象：** IDE 显示红色波浪线，提示 "common.h not found"
-
-**原因：** CMakeLists.txt 缺少头文件包含路径
-
-**解决方案：**
-```cmake
-include_directories(
-    ${CMAKE_SOURCE_DIR}/src/include  # ← 添加这行
-)
-```
-
-**验证步骤：**
-1. 重新加载 CMake 项目
-2. 重启 Clangd 语言服务器
-3. 清理并重新构建
-
----
-
-### 问题 2：结构体类型定义错误 🔴
-
-**现象：** 结构体成员类型不正确或未定义
-
-**错误示例：**
-```c
-// ❌ 错误写法
-typedef struct StudentInfo {
-    int* id;                              // 应该用 int，不是 int*
-    struct LinkedListNode *next;          // LinkedListNode 未定义
-} StudentNode;
-```
-
-**正确写法：**
-```c
-// ✅ 正确写法
-typedef struct StudentInfo {
-    int id;                               // 使用普通整数
-    struct StudentInfo *next;             // 指向同类型
-} StudentNode;
-```
-
-**修复要点：**
-- ✅ `id` 改为 `int` 类型（不是指针）
-- ✅ `next` 指针改为 `struct StudentInfo *`
-
----
-
-### 问题 3：函数声明不匹配 🔴
-
-**现象：** 头文件声明与实现不一致
-
-**示例：**
-```c
-// ❌ student_list.h 中
-void listInitianlize();    // 拼写错误
-
-// ✅ student_list.c 中
-void listInit() { ... }    // 实际实现
-```
-
-**解决方案：** 确保声明和实现的函数名完全一致
-
----
-
+## ❗
 ## 📦 模块详细说明
 
 ### 1️⃣ 应用层 (app/)
