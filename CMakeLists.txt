@@ -35,8 +35,8 @@ add_executable(StudentInfoSystem
         src/utils/config.h
         src/utils/validator.c
         src/utils/validator.h
-        src/utils/thread_pool.c
-        src/utils/thread_pool.h)
+        src/utils/logger.c
+        src/utils/logger.h)
 
 target_link_libraries(StudentInfoSystem ${GTK4_LIBRARIES})
 
