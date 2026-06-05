@@ -15,14 +15,14 @@ StudentNode* createNode(int I_id, int I_roomNum, char I_name[],char I_sex[], cha
         printf("Memory allocation failed!\n");
         return NULL;
     }//check memory allocation
-    newNode_p -> id = I_id;
-    newNode_p -> stuRoomNum = I_roomNum;
-    newNode_p -> stuPhone = I_phone;
-    strcpy_s (newNode_p -> stuName, sizeof(newNode_p -> stuName), I_name);
-    strcpy_s (newNode_p -> stuSex, sizeof(newNode_p -> stuSex), I_sex);
-    strcpy_s (newNode_p -> stuClass, sizeof(newNode_p -> stuClass), I_class);
-    strcpy_s (newNode_p -> stuBirth, sizeof(newNode_p -> stuBirth), I_birth);
-    strcpy_s (newNode_p -> stuHome, sizeof(newNode_p -> stuHome), I_home);//data  copy
+    newNode_p -> info.id = I_id;
+    newNode_p -> info.stuRoomNum = I_roomNum;
+    newNode_p -> info.stuPhone = I_phone;
+    strcpy_s (newNode_p -> info.stuName, sizeof(newNode_p -> info.stuName), I_name);
+    strcpy_s (newNode_p -> info.stuSex, sizeof(newNode_p -> info.stuSex), I_sex);
+    strcpy_s (newNode_p -> info.stuClass, sizeof(newNode_p -> info.stuClass), I_class);
+    strcpy_s (newNode_p -> info.stuBirth, sizeof(newNode_p -> info.stuBirth), I_birth);
+    strcpy_s (newNode_p -> info.stuHome, sizeof(newNode_p -> info.stuHome), I_home);//data  copy
     newNode_p->nextNode_ptr = NULL;//link ptr
     return newNode_p;//return node ptr
 }
@@ -50,5 +50,12 @@ StudentNode* addNode_Tail(StudentNode* *head_ptr, int I_id, int I_roomNum, char 
     return newNode_p;
 }
 
-void saveToFile(StudentNode* head_ptr, const char* filename)
+void IterateOverList(StudentNode* head_ptr, void(*visitFunc)(StudentNode* currentNode_p,void*), void* context)//callback function can define how to visit each node, context can be used to pass additional data if needed
 {
+    StudentNode* currentNode_ptr = head_ptr;
+    while (currentNode_ptr != NULL)//iterate over list until the end (NULL)
+    {
+        visitFunc(currentNode_ptr,context);
+        currentNode_ptr = currentNode_ptr->nextNode_ptr;
+    }
+}
