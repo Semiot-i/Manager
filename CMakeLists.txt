@@ -11,8 +11,8 @@ add_executable(for_review src/trial.txt
         src/main.c
         src/core/student_list.c
         src/core/student_list.h
-        src/core/student.c
-        src/core/student.h
+        src/core/student_process.c
+        src/core/student_process.h
         src/core/file_manager.c
         src/core/file_manager.h
         src/core/command.c

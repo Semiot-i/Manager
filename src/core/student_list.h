@@ -24,14 +24,15 @@ typedef struct StudentNode {
 
 extern StudentNode *head_p;//list head pointer
 
+/* List Process */
 void listInit();//initialize list
+void listFree();//Free all student info in the list
 StudentNode* createNode(int I_id, int I_roomNum, char I_name[],char I_sex[], char I_class[], char I_birth[], char I_home[],int I_phone);//Create new student information("I" means input)
-StudentNode* addNode_Tail(StudentNode* *head_ptr, int I_id, int I_roomNum, char I_name[],char I_sex[], char I_class[], char I_birth[], char I_home[],int I_phone);//Add Student information to the end of the list
-void modifyByPos(StudentNode* head_ptr, int pos, int I_id, int I_roomNum, char I_name[],char I_sex[]);
-void modifyById(StudentNode* head_ptr, int target_id, int I_id, int I_roomNum, char I_name[], char I_sex[]);
-void IterateOverList(StudentNode* head_ptr, void(*visitFunc)(StudentNode* currentNode_p,void*), void* context);//Iterate over list,you can write a callback function to visit each node
-void deleteByPos(StudentNode* *head_ptr, int pos);//Delete Student info by position
-void freeList();//Free all student info in the list
+
+
+/* List Iterate */
+void IterateOverList(StudentNode* head_ptr, void(*visitFunc)(StudentNode* currentNode_p,void*), void* context);//GENERICS:Iterate over list,you can write a callback function to visit each node
+
 
 
 #endif //FOR_REVIEW_LINKED_LIST_H
