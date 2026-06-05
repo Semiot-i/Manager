@@ -5,7 +5,7 @@
 #include "common.h"
 #include "student_list.h"
 
-StudentNode* head_p;
+StudentNode* head_p;//Student list head pointer
 
 StudentNode* createNode(int I_id, int I_roomNum, char I_name[],char I_sex[], char I_class[], char I_birth[], char I_home[],int I_phone)
 {
@@ -49,3 +49,6 @@ StudentNode* addNode_Tail(StudentNode* *head_ptr, int I_id, int I_roomNum, char 
     newNode_p->nextNode_ptr = NULL;
     return newNode_p;
 }
+
+void saveToFile(StudentNode* head_ptr, const char* filename)
+{
