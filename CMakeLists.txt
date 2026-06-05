@@ -1,13 +1,18 @@
 cmake_minimum_required(VERSION 3.10)
-project(for_review)
+project(StudentInfoSystem C)
 
 set(CMAKE_C_STANDARD 11)
 
-include_directories("C:/Program Files/Microsoft Visual Studio/18/Community/VC/Auxiliary/VS/include"
-                    ${CMAKE_SOURCE_DIR}/src/include)
-# link_directories 不需要手动设置，CMake 会自动处理 Windows SDK 库路径
+# 手动指定 pkg-config 路径（Windows + MSYS64）
+set(PKG_CONFIG_EXECUTABLE "C:/msys64/mingw64/bin/pkg-config.exe" CACHE FILEPATH "pkg-config executable")
 
-add_executable(for_review src/trial.txt
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTK4 REQUIRED gtk4)
+
+include_directories(${CMAKE_SOURCE_DIR}/src/include)
+link_directories(${GTK4_LIBRARY_DIRS})
+
+add_executable(for_review
         src/main.c
         src/core/student_list.c
         src/core/student_list.h
@@ -32,3 +37,7 @@ add_executable(for_review src/trial.txt
         src/utils/validator.h
         src/utils/thread_pool.c
         src/utils/thread_pool.h)
+
+target_link_libraries(StudentInfoSystem ${GTK4_LIBRARIES})
+
+target_compile_options(StudentInfoSystem PUBLIC ${GTK4_CFLAGS_OTHER})
