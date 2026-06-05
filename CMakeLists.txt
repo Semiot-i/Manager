@@ -12,7 +12,7 @@ pkg_check_modules(GTK4 REQUIRED gtk4)
 include_directories(${CMAKE_SOURCE_DIR}/src/include)
 link_directories(${GTK4_LIBRARY_DIRS})
 
-add_executable(for_review
+add_executable(StudentInfoSystem
         src/main.c
         src/core/student_list.c
         src/core/student_list.h
