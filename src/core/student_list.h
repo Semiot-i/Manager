@@ -22,8 +22,11 @@ extern StudentNode *head;
 void listInit();
 StudentNode* createNode(int I_id, int I_roomNum, char I_name[],char I_sex[], char I_class[], char I_birth[], char I_home[],int I_phone);//"I" means input
 StudentNode* addNode_Tail(StudentNode* *head_ptr, int I_id, int I_roomNum, char I_name[],char I_sex[], char I_class[], char I_birth[], char I_home[],int I_phone);
-void pruneNode(StudentNode *node);
-void deleteNode(StudentNode *node);
+void modifyByPos(StudentNode* head_ptr, int pos, int I_id, int I_roomNum, char I_name[],char);
+void modifyById(StudentNode* head_ptr, int target_id, int I_id, int I_roomNum, char I_name);
+StudentNode* IterateOverList(StudentNode* head_ptr, int target_id);
+void deleteByPos(StudentNode* *head_ptr, int pos);
+void freeList();
 
 
 #endif //FOR_REVIEW_LINKED_LIST_H
