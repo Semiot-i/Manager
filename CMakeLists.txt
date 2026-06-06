@@ -23,14 +23,6 @@ add_executable(StudentInfoSystem
         src/core/command.c
         src/core/command.h
         src/include/common.h
-        src/app/app_window.c
-        src/app/file_browser.c
-        src/app/app_window.h
-        src/app/file_browser.h
-        src/app/student_editor.c
-        src/app/student_editor.h
-        src/app/settings.c
-        src/app/settings.h
         src/utils/config.c
         src/utils/config.h
         src/utils/validator.c

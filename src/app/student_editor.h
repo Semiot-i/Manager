@@ -1,8 +1,0 @@
-//
-// Created by ASUS on 2026/6/4.
-//
-
-#ifndef FOR_REVIEW_STUDENT_EDITOR_H
-#define FOR_REVIEW_STUDENT_EDITOR_H
-
-#endif //FOR_REVIEW_STUDENT_EDITOR_H

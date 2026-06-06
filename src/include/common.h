@@ -10,6 +10,10 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <windows.h>
+#include <commctrl.h>
+#include <shlobj.h>
+
 
 
 #endif //FOR_REVIEW_COMMON_H

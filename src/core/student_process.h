@@ -9,7 +9,6 @@
 
 
 /* Node Process */
-StudentNode* addNode_Tail(StudentNode* *head_ptr, int I_id, int I_roomNum, char* I_name,char* I_sex, char* I_class, char* I_birth, char* I_home,int I_phone);//Add Student information to the end of the list
 void deleteByPos(StudentNode* *head_ptr, int pos);//Delete Student info by position
 
 

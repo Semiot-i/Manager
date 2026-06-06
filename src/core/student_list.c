@@ -8,8 +8,8 @@
 StudentNode* head_p;//Student list head pointer,for multi-threading use
 
 
-/* List Process*/
-StudentNode* createNode(int I_id, int I_roomNum, char* I_name,char* I_sex, char* I_class, char* I_birth, char* I_home,int I_phone)
+/* Node Process */
+StudentNode* createNode(const int I_id, int I_roomNum, const char* I_name,const char* I_sex,const char* I_class,const char* I_birth,const char* I_home,int I_phone)
 {
     StudentNode *newNode_p = (StudentNode *)malloc (sizeof(StudentNode));//create node on heap
     if (newNode_p == NULL)
@@ -61,17 +61,61 @@ void* destroyNode(StudentNode* node_p)
     free(node_p);//free info and ptr memory
     return temp_ptr;
 }
-void listInit()
+StudentNode* addNode_Tail(StudentNode* *head_ptr, int I_id, int I_roomNum,const char* I_name,const char* I_sex,const char* I_class,const char* I_birth,const char* I_home,int I_phone)
 {
-    head_p = NULL;//initialize head pointer to NULL (empty list)
+    StudentNode *newNode_p = createNode(I_id, I_roomNum, I_name, I_sex, I_class, I_birth, I_home, I_phone);
+    if (*head_ptr ==NULL)
+    {
+        *head_ptr = newNode_p;
+        return newNode_p;
+    }//check list is empty or not
+    StudentNode *temp_p = *head_ptr;
+    while (temp_p->nextNode_ptr != NULL)
+    {
+        temp_p = temp_p->nextNode_ptr;
+    }//transport to the end of list
+    temp_p->nextNode_ptr = newNode_p;
+    newNode_p->nextNode_ptr = NULL;
+    return newNode_p;
+}
+void destroyNodeByPos(StudentNode* head_ptr,int I_pos)
+{
+    if (I_pos < 0)
+    {
+        printf("Invalid position! Valid input is a positive integer!\n");
+        return;
+    }//check position validation
+    else if (I_pos == 0)
+    {
+        printf("List is empty! You can't destroy it yet");
+        return;
+    }//check list is empty or not
+    else if (I_pos == 1)
+    {
+        destroyNode(head_ptr);
+        head_ptr = NULL;
+    }//check if the node to be destroyed is the first node
+    else if (I_pos > 1)
+    {
+
+        updatePos(head_ptr);
+    }
+}
+
+
+/* List Process */  //(unfinished)
+void listInit(StudentNode* head_ptr)
+{
+    listFree(head_ptr);
+    head_ptr = NULL;
     // Note: If the list already contains nodes, they will be orphaned.
     // Call listFree() first to avoid memory leaks before re-initializing.
 }
-void listFree()
+void listFree(StudentNode* head_ptr)
 {
-    while (head_p != NULL)
+    while (head_ptr != NULL)
     {
-        head_p = (StudentNode*)destroyNode(head_p);//destroyNode frees the node and returns the next node ptr
+        head_ptr = (StudentNode*)destroyNode(head_ptr);//destroyNode frees the node and returns the next node ptr
     }
 }
 

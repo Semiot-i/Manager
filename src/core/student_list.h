@@ -25,15 +25,19 @@ typedef struct StudentNode {
 
 extern StudentNode *head_p;//list head pointer
 
-/* List Process */
-StudentNode* createNode(int I_id, int I_roomNum, char* I_name,char* I_sex, char* I_class, char* I_birth, char* I_home,int I_phone);//Create new student information("I" means input)
+/* Node Process */
+StudentNode* createNode(int I_id, int I_roomNum,const char* I_name,const char* I_sex,const char* I_class,const char* I_birth,const char* I_home,int I_phone);//Create new student information("I" means input)
 void* destroyNode(StudentNode* node_p);//Free student info,and return the next node ptr
-void listInit();//initialize list
-void listFree();//Free all list
+StudentNode* addNode_Tail(StudentNode* *head_ptr, int I_id, int I_roomNum,const char* I_name,const char* I_sex,const char* I_class,const char* I_birth,const char* I_home,int I_phone);//Add Student information to the end of the list
+void deleteNodeByPos(StudentNode* *head_ptr, int pos);
+
+/* List Process */
+void listInit(StudentNode* head_ptr);//initialize list
+void listFree(StudentNode* head_ptr);//Free all list
 
 
 /* List Query */
-void updatePositions(StudentNode* head_ptr);//Update position field for all nodes in the list
+void updatePos(StudentNode* head_ptr);//Update position field for all nodes in the list
 StudentNode* getNodeByPos(StudentNode* head_ptr, int I_pos);//Find node by position,return the node ptr
 StudentNode* getNodeById(StudentNode* head_ptr, int I_id);//Find node by student id,return the node ptr
 StudentNode* getNodeByName(StudentNode* headA_ptr, char* I_name);//Find node by student's name,return the node ptr
