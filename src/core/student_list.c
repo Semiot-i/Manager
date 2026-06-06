@@ -24,12 +24,12 @@ StudentNode* createNode(int I_id, int I_roomNum, char* I_name,char* I_sex, char*
     size_t sexLen = strlen(I_sex) + 1;
     size_t classLen = strlen(I_class) + 1;
     size_t birthLen = strlen(I_birth) + 1;
-    size_t homeLen = strlen(I_home) + 1;
+    size_t homeLen = strlen(I_home) + 1;//calculate string lengths for memory allocation
     newNode_p -> info.stuName = (char*)malloc(nameLen * sizeof(char));
     newNode_p -> info.stuSex = (char*)malloc(sexLen * sizeof(char));
     newNode_p -> info.stuClass = (char*)malloc(classLen * sizeof(char));
     newNode_p -> info.stuBirth = (char*)malloc(birthLen * sizeof(char));
-    newNode_p -> info.stuHome = (char*)malloc(homeLen * sizeof(char));
+    newNode_p -> info.stuHome = (char*)malloc(homeLen * sizeof(char));//allocate memory for strings
     if (newNode_p -> info.stuName == NULL || newNode_p -> info.stuSex == NULL ||
         newNode_p -> info.stuClass == NULL || newNode_p -> info.stuBirth == NULL ||
         newNode_p -> info.stuHome == NULL)
