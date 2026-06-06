@@ -7,15 +7,22 @@
 
 #include "student_list.h"
 
-
-/* Node Process */
-void deleteByPos(StudentNode* *head_ptr, int pos);//Delete Student info by position
+typedef enum ModifyType
+{
+    MODIFY_Id,
+    MODIFY_RoomNum,
+    MODIFY_Name,
+    MODIFY_Sex,
+    MODIFY_Class,
+    MODIFY_Birth,
+    MODIFY_Home,
+    MODIFY_Phone
+}ModifyType;
 
 
 /* Node Modify */
-void modifyByPos(StudentNode* head_ptr, int pos, int I_id, int I_roomNum, char* I_name,char* I_sex, char* I_class, char* I_birth, char* I_home,int I_phone);
-void modifyById(StudentNode* head_ptr, int target_id, int I_id, int I_roomNum, char* I_name, char* I_sex, char* I_class, char* I_birth, char* I_home, int I_phone);
-
+void modify(StudentNode* head_ptr,ModifyType M_type,void* M_value);
+void modifyByPos(StudentNode* *head_ptr,ModifyType M_type,void* M_value,int pos);
 
 
 
