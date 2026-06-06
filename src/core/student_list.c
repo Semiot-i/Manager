@@ -77,40 +77,136 @@ void listFree()
 
 
 /* List Query */
-void updatePositions(StudentNode* head_ptr)
+void updatePos(StudentNode* head_ptr)
 {
-    int currentPos = 1;//position starts from 1
+    int headPos = 1;
+    if (head_ptr == NULL){return;}//empty list return
     StudentNode* currentNode_p = head_ptr;
-    while (currentNode_p != NULL)
+    while (currentNode_p != NULL)//iterate over
     {
-        currentNode_p->position = currentPos;
-        currentPos++;
+        currentNode_p->position = headPos;
+        headPos++;
         currentNode_p = currentNode_p->nextNode_ptr;
-    }//assign sequential positions to all nodes
+    }
+
 }
 StudentNode* getNodeByPos(StudentNode* head_ptr, int I_pos)
 {
-    if (I_pos <= 0)return NULL;//invalid position
+    if (I_pos <= 0)
+    {
+        printf("Invalid position! Valid input is a positive integer!\n");
+        return NULL;
+    }//check position validation
+    if (head_ptr == NULL)
+    {
+        printf("List is empty!\n");
+        return NULL;
+    }//check list is not empty
     StudentNode* currentNode_p = head_ptr;
     while (currentNode_p != NULL)
     {
         if (currentNode_p->position == I_pos)return currentNode_p;
-        currentNode_p = currentNode_p->nextNode_ptr;
+        else currentNode_p = currentNode_p->nextNode_ptr;
     }
-    return NULL;//position not found
+    printf("Position %d not found! You might enter an invalid position.\n", I_pos);
+    return NULL;
 }
-StudentNode* getNodeById(StudentNode* head_ptr, int I_id)
+StudentNode* getNodeById(StudentNode* head_ptr,int I_id)
 {
+    if (head_ptr == NULL)
+    {
+        printf("List is empty!\n");
+        return NULL;
+    }
     StudentNode* currentNode_p = head_ptr;
     while (currentNode_p != NULL)
     {
         if (currentNode_p->info.id == I_id)return currentNode_p;
+        else currentNode_p = currentNode_p->nextNode_ptr;
+    }
+    printf("ID %d not found! You might enter an undefined ID.\n", I_id);
+    return NULL;
+}
+StudentNode* getNodeByName(StudentNode* head_ptr,char* I_name)
+{
+    if (head_ptr == NULL)
+    {
+        printf("List is empty!\n");
+        return NULL;
+    }
+    if (I_name == NULL)
+    {
+        printf("Name is empty!\n");
+        return NULL;
+    }
+    StudentNode* currentNode_p = head_ptr;
+    while (currentNode_p != NULL)
+    {
+        if (currentNode_p->info.stuName!=NULL && strcmp(currentNode_p->info.stuName, I_name) == 0)return currentNode_p;
+        else currentNode_p = currentNode_p->nextNode_ptr;
+    }
+    printf("Name %s not found! You might enter an undefined name.\n", I_name);
+    return NULL;
+}
+StudentNode** getAllNodeByName(StudentNode*head_ptr,char* I_name)
+{
+    //check list and input name is not empty
+    if (head_ptr == NULL)
+    {
+        printf("List is empty!\n");
+        return NULL;
+    }
+    if (I_name == NULL)
+    {
+        printf("Name is empty!\n");
+        return NULL;
+    }
+
+
+    //count name amount
+    int count = 0;
+    StudentNode* currentNode_p = head_ptr;
+    while (currentNode_p != NULL)    {
+        if (currentNode_p->info.stuName!=NULL && strcmp(currentNode_p->info.stuName, I_name) == 0)count++;
         currentNode_p = currentNode_p->nextNode_ptr;
     }
-    return NULL;//id not found
+
+
+    //allocate ptr memory
+    if (count == 0)
+    {
+        printf("No student with name %s found!\n", I_name);
+        return NULL;
+    }//check name amount
+    StudentNode** ptrArray = (StudentNode**)malloc((count + 1) *sizeof(StudentNode*));//allocate memory for pointer array,and extra space for NULL character
+    if (ptrArray == NULL)
+    {
+        printf("Memory allocation failed for pointer array!");
+        return NULL;
+    }//check memory allocation for pointer array
+
+    //collect ptr to ptr array
+    int index = 0;
+    currentNode_p = head_ptr;
+    while (currentNode_p != NULL)
+    {
+        if (currentNode_p->info.stuName!=NULL && strcmp(currentNode_p->info.stuName, I_name) == 0)
+        {
+            ptrArray[index] = currentNode_p;
+            index++;
+        }
+        currentNode_p = currentNode_p->nextNode_ptr;
+    }//iterate over list
+    ptrArray[index] = NULL;//NULL character to mark end of array
+    return ptrArray;
 }
 int getCount(StudentNode* head_ptr)
 {
+    if (head_ptr == NULL)
+    {
+        printf("List is empty!\n");
+        return 0;
+    }
     int count = 0;
     StudentNode* currentNode_p = head_ptr;
     while (currentNode_p != NULL)
@@ -122,8 +218,8 @@ int getCount(StudentNode* head_ptr)
 }
 
 
-/* List Iterate */
-void IterateOverList(StudentNode* head_ptr, void(*visitFunc)(StudentNode* currentNode_p,void*), void* context)//GENERICS:callback function can define how to visit each node, context can be used to pass additional data if needed
+/* List Iterate */ //For GENERICS
+void IterateOverList(StudentNode* head_ptr, void(*visitFunc)(StudentNode* currentNode_p,void* context), void* context)//GENERICS:callback function can define how to visit each node, context can be used to pass additional data if needed
 {
     StudentNode* currentNode_ptr = head_ptr;
     while (currentNode_ptr != NULL)//iterate over list until the end (NULL)

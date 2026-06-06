@@ -34,8 +34,10 @@ void listFree();//Free all list
 
 /* List Query */
 void updatePositions(StudentNode* head_ptr);//Update position field for all nodes in the list
-StudentNode* getNodeByPos(StudentNode* head_ptr, int I_pos);//Find node by position,return node ptr
-StudentNode* getNodeById(StudentNode* head_ptr, int I_id);//Find node by student id,return node ptr
+StudentNode* getNodeByPos(StudentNode* head_ptr, int I_pos);//Find node by position,return the node ptr
+StudentNode* getNodeById(StudentNode* head_ptr, int I_id);//Find node by student id,return the node ptr
+StudentNode* getNodeByName(StudentNode* headA_ptr, char* I_name);//Find node by student's name,return the node ptr
+StudentNode** getAllNodeByName(StudentNode* head_ptr, char* I_name);//Find all nodes by student's name,return an array of node ptrs
 int getCount(StudentNode* head_ptr);//Get the total number of nodes in the list
 
 
