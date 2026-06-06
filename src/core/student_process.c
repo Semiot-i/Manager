@@ -9,7 +9,7 @@
 
 
 /* Node Process */
-StudentNode* addNode_Tail(StudentNode* *head_ptr, int I_id, int I_roomNum, char I_name[],char I_sex[], char I_class[], char I_birth[], char I_home[],int I_phone)
+StudentNode* addNode_Tail(StudentNode* *head_ptr, int I_id, int I_roomNum, char* I_name,char* I_sex, char* I_class, char* I_birth, char* I_home,int I_phone)
 {
     StudentNode *newNode_p = createNode(I_id, I_roomNum, I_name, I_sex, I_class, I_birth, I_home, I_phone);
     if (*head_ptr ==NULL)

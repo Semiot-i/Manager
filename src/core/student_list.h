@@ -1,4 +1,4 @@
-﻿//
+//
 // Created by ASUS on 2026/6/4.
 //
 
@@ -30,6 +30,14 @@ StudentNode* createNode(int I_id, int I_roomNum, char* I_name,char* I_sex, char*
 void* destroyNode(StudentNode* node_p);//Free student info,and return the next node ptr
 void listInit();//initialize list
 void listFree();//Free all list
+
+
+/* List Query */
+void updatePositions(StudentNode* head_ptr);//Update position field for all nodes in the list
+StudentNode* getNodeByPos(StudentNode* head_ptr, int I_pos);//Find node by position,return node ptr
+StudentNode* getNodeById(StudentNode* head_ptr, int I_id);//Find node by student id,return node ptr
+int getCount(StudentNode* head_ptr);//Get the total number of nodes in the list
+
 
 /* List Iterate */
 void IterateOverList(StudentNode* head_ptr, void(*visitFunc)(StudentNode* currentNode_p,void*), void* context);//GENERICS:Iterate over list,you can write a callback function to visit each node

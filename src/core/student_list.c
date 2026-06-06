@@ -16,7 +16,7 @@ StudentNode* createNode(int I_id, int I_roomNum, char* I_name,char* I_sex, char*
     {
         printf("Memory allocation failed!\n");
         return NULL;
-    }//check memory allocation
+    }//check StudentNode memory allocation statue
     newNode_p -> info.id = I_id;
     newNode_p -> info.stuRoomNum = I_roomNum;
     newNode_p -> info.stuPhone = I_phone;
@@ -32,18 +32,13 @@ StudentNode* createNode(int I_id, int I_roomNum, char* I_name,char* I_sex, char*
     newNode_p -> info.stuHome = (char*)malloc(homeLen * sizeof(char));//allocate memory for strings
     if (newNode_p -> info.stuName == NULL || newNode_p -> info.stuSex == NULL ||
         newNode_p -> info.stuClass == NULL || newNode_p -> info.stuBirth == NULL ||
-        newNode_p -> info.stuHome == NULL)
+        newNode_p -> info.stuHome == NULL)//check if any string memory allocation failed
     {
         // Free any successfully allocated strings before returning
-        free(newNode_p -> info.stuName);
-        free(newNode_p -> info.stuSex);
-        free(newNode_p -> info.stuClass);
-        free(newNode_p -> info.stuBirth);
-        free(newNode_p -> info.stuHome);
-        free(newNode_p);
         printf("String memory allocation failed!\n");
+        destroyNode(newNode_p);
         return NULL;
-    }
+    }//check string memory allocation statue,avoid memory leaks
     strcpy_s (newNode_p -> info.stuName, nameLen, I_name);
     strcpy_s (newNode_p -> info.stuSex, sexLen, I_sex);
     strcpy_s (newNode_p -> info.stuClass, classLen, I_class);
@@ -80,6 +75,51 @@ void listFree()
     }
 }
 
+
+/* List Query */
+void updatePositions(StudentNode* head_ptr)
+{
+    int currentPos = 1;//position starts from 1
+    StudentNode* currentNode_p = head_ptr;
+    while (currentNode_p != NULL)
+    {
+        currentNode_p->position = currentPos;
+        currentPos++;
+        currentNode_p = currentNode_p->nextNode_ptr;
+    }//assign sequential positions to all nodes
+}
+StudentNode* getNodeByPos(StudentNode* head_ptr, int I_pos)
+{
+    if (I_pos <= 0)return NULL;//invalid position
+    StudentNode* currentNode_p = head_ptr;
+    while (currentNode_p != NULL)
+    {
+        if (currentNode_p->position == I_pos)return currentNode_p;
+        currentNode_p = currentNode_p->nextNode_ptr;
+    }
+    return NULL;//position not found
+}
+StudentNode* getNodeById(StudentNode* head_ptr, int I_id)
+{
+    StudentNode* currentNode_p = head_ptr;
+    while (currentNode_p != NULL)
+    {
+        if (currentNode_p->info.id == I_id)return currentNode_p;
+        currentNode_p = currentNode_p->nextNode_ptr;
+    }
+    return NULL;//id not found
+}
+int getCount(StudentNode* head_ptr)
+{
+    int count = 0;
+    StudentNode* currentNode_p = head_ptr;
+    while (currentNode_p != NULL)
+    {
+        count++;
+        currentNode_p = currentNode_p->nextNode_ptr;
+    }
+    return count;//return total number of nodes
+}
 
 
 /* List Iterate */
