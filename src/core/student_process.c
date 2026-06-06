@@ -4,7 +4,8 @@
 #include "common.h"
 #include "student_process.h"
 
-StudentNode* head_p;
+// head_p is defined in student_list.c, declared extern in student_list.h
+// No need to redefine here
 
 
 /* Node Process */

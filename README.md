@@ -6,14 +6,14 @@
 
 ## 📊 项目概览
 
-| 项目 | 说明 |
-|:----:|:----|
-| 📁 源文件数 | 17 个 |
-| 🧩 架构层次 | 3 层（app/core/utils） |
-| 📋 C 标准 | C11 |
-| 🔨 构建工具 | CMake + Ninja |
-| 🖥️ 开发环境 | Windows + CLion |
-| 🎨 UI 框架 | GTK4（可选） |
+| 项目 | 说明                       |
+|:----:|:-------------------------|
+| 📁 源文件数 | 17 个                     |
+| 🧩 架构层次 | 3 层（app/core/utils）      |
+| 📋 C 标准 | C11                      |
+| 🔨 构建工具 | CMake + Ninja            |
+| 🖥️ 开发环境 | Windows + CLion + VScode |
+| 🎨 UI 框架 | GTK4                     |
 
 ---
 
@@ -63,7 +63,7 @@ StudentInfoSystem/
 │   ├── utils/                           # 工具层
 │   │   ├── config.c/h                  #    配置文件管理
 │   │   ├── validator.c/h               #    数据验证
-│   │   └── thread_pool.c/h             #    线程池（预留）
+│   │   └── logger.c/h             #    日志记录功能
 │   │
 │   └── include/                         # 公共头文件
 │       └── common.h                     #    通用头文件（标准库包含）
@@ -295,8 +295,8 @@ pkg_check_modules(GTK4 REQUIRED gtk4)
 
 - **语言**: C (C11 标准)
 - **构建系统**: CMake + Ninja
-- **UI 框架**: GTK4（可选）
-- **IDE**: CLion
+- **UI 框架**: GTK4
+- **IDE**: CLion + VSCode
 - **版本控制**: Git
 
 ---

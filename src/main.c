@@ -3,6 +3,7 @@
 //
 #include "common.h"
 #include "core/student_list.h"
+#include "core/student_process.h"
 
 
 int main()
@@ -54,7 +55,7 @@ int main()
             printf("Phone: ");
             scanf("%d", &phone);
                     
-            addNode_Tail(&head, id, roomNum, name, sex, stuClass, birth, home, phone);
+            addNode_Tail(&head_p, id, roomNum, name, sex, stuClass, birth, home, phone);
             printf("Student added successfully!\n");
         }
         else if (choice == 2)
