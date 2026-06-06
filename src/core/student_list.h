@@ -32,7 +32,7 @@ StudentNode* addNode_Tail(StudentNode** head_ptr, int I_id, int I_roomNum,const 
 StudentNode* addNodeByPos(StudentNode** head_ptr, int I_pos, int I_id, int I_roomNum,const char* I_name,const char* I_sex,const char* I_class,const char* I_birth,const char* I_home,int I_phone);//Add Student information at specified position
 void deleteNodeByPos(StudentNode** head_ptr, int pos);//Delete node at specified position
 
-/* List Process */
+/* List Process */ //(Unfinished)avoid using the func, it's not completed,you can build func use the node process func
 void listInit(StudentNode** head_ptr);//initialize list
 void listFree(StudentNode** head_ptr);//Free all list
 
