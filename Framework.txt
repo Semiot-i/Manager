@@ -7,8 +7,8 @@ StudentInfoSystem/
 │   │   ├── student_editor.c/h    # 学生信息编辑界面
 │   │   └── settings.c/h          # 设置界面
 │   ├── core/                     # 核心业务层
-│   │   ├── student.c/h           # 学生数据操作与链表管理
-│   │   ├── student_list.c/h      # 学生链表与遍历
+│   │   ├── student_process.c/h   # 学生数据操作
+│   │   ├── student_list.c/h      # 学生链表管理与遍历
 │   │   ├── file_manager.c/h      # 文件读写操作
 │   │   └── command.c/h           # 命令模式(撤销/重做)
 │   ├── utils/                    # 工具层

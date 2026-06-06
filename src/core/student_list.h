@@ -23,17 +23,18 @@ typedef struct StudentNode {
     struct StudentNode *nextNode_ptr;//link ptr
 } StudentNode;//linked list node struct
 
-extern StudentNode *head_p;//list head pointer
+extern StudentNode *GlobalListHead_p;//list head pointer
 
 /* Node Process */
 StudentNode* createNode(int I_id, int I_roomNum,const char* I_name,const char* I_sex,const char* I_class,const char* I_birth,const char* I_home,int I_phone);//Create new student information("I" means input)
-void* destroyNode(StudentNode* node_p);//Free student info,and return the next node ptr
-StudentNode* addNode_Tail(StudentNode* *head_ptr, int I_id, int I_roomNum,const char* I_name,const char* I_sex,const char* I_class,const char* I_birth,const char* I_home,int I_phone);//Add Student information to the end of the list
-void deleteNodeByPos(StudentNode* *head_ptr, int pos);
+StudentNode* destroyNode(StudentNode* node_p);//Free student info,and return the next node ptr
+StudentNode* addNode_Tail(StudentNode** head_ptr, int I_id, int I_roomNum,const char* I_name,const char* I_sex,const char* I_class,const char* I_birth,const char* I_home,int I_phone);//Add Student information to the end of the list
+StudentNode* addNodeByPos(StudentNode** head_ptr, int I_pos, int I_id, int I_roomNum,const char* I_name,const char* I_sex,const char* I_class,const char* I_birth,const char* I_home,int I_phone);//Add Student information at specified position
+void deleteNodeByPos(StudentNode** head_ptr, int pos);//Delete node at specified position
 
 /* List Process */
-void listInit(StudentNode* head_ptr);//initialize list
-void listFree(StudentNode* head_ptr);//Free all list
+void listInit(StudentNode** head_ptr);//initialize list
+void listFree(StudentNode** head_ptr);//Free all list
 
 
 /* List Query */

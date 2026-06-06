@@ -2,9 +2,18 @@ name: New MCP server
 version: 0.0.1
 schema: v1
 mcpServers:
-  - name: New MCP server
+  - name: deepseek-v4
     command: npx
     args:
       - -y
-      - <your-mcp-server>
-    env: {}
+      - deepseek-mcp-server
+    env:
+      DEEPSEEK_API_KEY: sk-75323020809e4a35bbf0215cfa884b64
+
+  - name: deepseek-thinker
+    command: npx
+    args:
+      - -y
+      - deepseek-thinker-mcp
+    env:
+      DEEPSEEK_API_KEY: sk-75323020809e4a35bbf0215cfa884b64

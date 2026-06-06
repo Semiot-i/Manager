@@ -5,7 +5,7 @@
 #include "common.h"
 #include "student_list.h"
 
-StudentNode* head_p;//Student list head pointer,for multi-threading use
+StudentNode* GlobalListHead_p;//Student list head pointer,for multi-threading use
 
 
 /* Node Process */
@@ -24,7 +24,7 @@ StudentNode* createNode(const int I_id, int I_roomNum, const char* I_name,const 
     size_t sexLen = strlen(I_sex) + 1;
     size_t classLen = strlen(I_class) + 1;
     size_t birthLen = strlen(I_birth) + 1;
-    size_t homeLen = strlen(I_home) + 1;//calculate string lengths for memory allocation
+    size_t homeLen = strlen(I_home) + 1;//calculate string lengths for memory allocation,so that you needn't call strlen twice
     newNode_p -> info.stuName = (char*)malloc(nameLen * sizeof(char));
     newNode_p -> info.stuSex = (char*)malloc(sexLen * sizeof(char));
     newNode_p -> info.stuClass = (char*)malloc(classLen * sizeof(char));
@@ -48,17 +48,24 @@ StudentNode* createNode(const int I_id, int I_roomNum, const char* I_name,const 
     newNode_p->nextNode_ptr = NULL;//link ptr
     return newNode_p;//return node ptr
 }
-void* destroyNode(StudentNode* node_p)
+StudentNode* destroyNode(StudentNode* node_p)
 {
     if (node_p == NULL)return NULL;
 
-    void* temp_ptr = node_p->nextNode_ptr;
+    StudentNode* temp_ptr = node_p->nextNode_ptr;
     free(node_p->info.stuName);
     free(node_p->info.stuSex);
     free(node_p->info.stuClass);
     free(node_p->info.stuBirth);
     free(node_p->info.stuHome);//free info memory
+    node_p->info.stuName = NULL;
+    node_p->info.stuSex = NULL;
+    node_p->info.stuClass = NULL;
+    node_p->info.stuBirth = NULL;
+    node_p->info.stuHome = NULL;//clear info pointers
     free(node_p);//free info and ptr memory
+    node_p = NULL;
+
     return temp_ptr;
 }
 StudentNode* addNode_Tail(StudentNode* *head_ptr, int I_id, int I_roomNum,const char* I_name,const char* I_sex,const char* I_class,const char* I_birth,const char* I_home,int I_phone)
@@ -78,44 +85,102 @@ StudentNode* addNode_Tail(StudentNode* *head_ptr, int I_id, int I_roomNum,const 
     newNode_p->nextNode_ptr = NULL;
     return newNode_p;
 }
-void destroyNodeByPos(StudentNode* head_ptr,int I_pos)
+void deleteNodeByPos(StudentNode* *head_ptr, int I_pos)
 {
-    if (I_pos < 0)
+    if (head_ptr == NULL || *head_ptr == NULL)
+    {
+        printf("List is empty! You can't destroy it yet\n");
+        return;
+    }//check list is empty or not
+    
+    if (I_pos < 1)
     {
         printf("Invalid position! Valid input is a positive integer!\n");
         return;
     }//check position validation
-    else if (I_pos == 0)
+    
+    if (I_pos == 1)
     {
-        printf("List is empty! You can't destroy it yet");
-        return;
-    }//check list is empty or not
-    else if (I_pos == 1)
-    {
-        destroyNode(head_ptr);
-        head_ptr = NULL;
+        StudentNode* nextNode = (*head_ptr)->nextNode_ptr;
+        destroyNode(*head_ptr);
+        *head_ptr = nextNode;
+        updatePos(*head_ptr);
     }//check if the node to be destroyed is the first node
-    else if (I_pos > 1)
+    else
     {
-
-        updatePos(head_ptr);
-    }
+        StudentNode* preNode_p = getNodeByPos(*head_ptr, I_pos - 1);
+        if (preNode_p == NULL)
+        {
+            printf("Previous node not found! Invalid position %d.\n", I_pos - 1);
+            return;
+        }//SAFE:check if previous node exists
+        if (preNode_p->nextNode_ptr == NULL)
+        {
+            printf("Node at position %d does not exist!\n", I_pos);
+            return;
+        }//SAFE:check if target node exists
+        StudentNode* nextNode_p = destroyNode(preNode_p->nextNode_ptr);
+        preNode_p->nextNode_ptr = nextNode_p;
+        updatePos(*head_ptr);
+    }//destroy node at position I_pos, and update positions of all nodes after it
 }
+StudentNode* addNodeByPos(StudentNode** head_ptr, int I_pos, int I_id, int I_roomNum, const char* I_name, const char* I_sex, const char* I_class, const char* I_birth, const char* I_home, int I_phone)
+{
+    if (head_ptr == NULL)
+    {
+        printf("Invalid head pointer!\n");
+        return NULL;
+    }//SAFE:check head pointer validation
+    
+    if (I_pos < 1)
+    {
+        printf("Invalid position! Valid input is a positive integer!\n");
+        return NULL;
+    }//check position validation
+    
+    StudentNode* newNode_p = createNode(I_id, I_roomNum, I_name, I_sex, I_class, I_birth, I_home, I_phone);
+    if (newNode_p == NULL)
+    {
+        return NULL;
+    }//still empty,return NULL
+    
+    if (*head_ptr == NULL || I_pos == 1)
+    {
+        newNode_p->nextNode_ptr = *head_ptr;
+        *head_ptr = newNode_p;
+        updatePos(*head_ptr);
+        return newNode_p;
+    }//insert at head or into empty list
+    
+    StudentNode* preNode_p = getNodeByPos(*head_ptr, I_pos - 1);
+    if (preNode_p == NULL)
+    {
+        printf("Position %d is out of range! Adding to tail instead.\n", I_pos);
+        return addNode_Tail(head_ptr, I_id, I_roomNum, I_name, I_sex, I_class, I_birth, I_home, I_phone);
+    }//get previous node,if position is invalid,add to tail
+    
+    newNode_p->nextNode_ptr = preNode_p->nextNode_ptr;
+    preNode_p->nextNode_ptr = newNode_p;
+    updatePos(*head_ptr);
+    return newNode_p;
+}//insert node at position I_pos
 
 
 /* List Process */  //(unfinished)
-void listInit(StudentNode* head_ptr)
+void listInit(StudentNode** head_ptr)
 {
+    if (head_ptr == NULL) return;
     listFree(head_ptr);
-    head_ptr = NULL;
+    *head_ptr = NULL;
     // Note: If the list already contains nodes, they will be orphaned.
     // Call listFree() first to avoid memory leaks before re-initializing.
 }
-void listFree(StudentNode* head_ptr)
+void listFree(StudentNode** head_ptr)
 {
-    while (head_ptr != NULL)
+    if (head_ptr == NULL) return;
+    while (*head_ptr != NULL)
     {
-        head_ptr = (StudentNode*)destroyNode(head_ptr);//destroyNode frees the node and returns the next node ptr
+        *head_ptr = (StudentNode*)destroyNode(*head_ptr);//destroyNode frees the node and returns the next node ptr
     }
 }
 
