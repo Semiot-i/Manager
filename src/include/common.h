@@ -11,8 +11,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <windows.h>
-#include <commctrl.h>
-#include <shlobj.h>
 
 
 
