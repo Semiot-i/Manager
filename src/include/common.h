@@ -12,6 +12,6 @@
 #include <stdlib.h>
 #include <windows.h>
 
-#define DEFAULT_DATA_DIR "data"
+#define DEFAULT_DATA_DIR "../data"
 
 #endif //STUDENTINFOSYSTEM_COMMON_H
