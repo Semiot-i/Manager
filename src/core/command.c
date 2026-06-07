@@ -1,28 +1,11 @@
-//
 // Created by ASUS on 2026/6/4.
 //
 
 #include "common.h"
 #include "command.h"
+#include "student_process.h"
+#include "file_manager.h"
 
-// 将 target 指向的字符串替换为 source
-static int replaceString(char** target, const char* source)
-{
-    if (target == NULL || source == NULL)
-        return 0;
-
-    size_t length = strlen(source) + 1;
-    char* buffer = (char*)malloc(length);
-    if (buffer == NULL)
-        return 0;
-
-    strcpy_s(buffer, length, source);
-    free(*target);
-    *target = buffer;
-    return 1;
-}
-
-// 从文件中读取一行整数，忽略空行
 static int readIntLine(FILE* file, int* outValue)
 {
     if (file == NULL || outValue == NULL)
@@ -46,7 +29,6 @@ static int readIntLine(FILE* file, int* outValue)
     return 0;
 }
 
-// 从文件中读取一行字符串，并去掉尾部换行符
 static int readStringLine(FILE* file, char** outString)
 {
     if (file == NULL || outString == NULL)
@@ -68,7 +50,6 @@ static int readStringLine(FILE* file, char** outString)
     return 1;
 }
 
-// 添加学生节点到链表末尾，参数检查并更新位置索引
 int addStudent(StudentNode** head_ptr,
                int id,
                int roomNum,
@@ -82,85 +63,43 @@ int addStudent(StudentNode** head_ptr,
     if (head_ptr == NULL || name == NULL || sex == NULL || stuClass == NULL || birth == NULL || home == NULL)
         return 0;
 
-    StudentNode* newNode = createNode(id, roomNum, (char*)name, (char*)sex, (char*)stuClass, (char*)birth, (char*)home, phone);
-    if (newNode == NULL)
+    StudentNode* node = addNode_Tail(head_ptr, id, roomNum, name, sex, stuClass, birth, home, phone);
+    if (node == NULL)
         return 0;
-
-    if (*head_ptr == NULL)
-    {
-        *head_ptr = newNode;
-    }
-    else
-    {
-        StudentNode* tail = *head_ptr;
-        while (tail->nextNode_ptr != NULL)
-            tail = tail->nextNode_ptr;
-
-        tail->nextNode_ptr = newNode;
-    }
 
     updatePos(*head_ptr);
     return 1;
 }
 
-// 按位置删除学生节点，并重新计算位置
 int deleteStudentByPos(StudentNode** head_ptr, int pos)
 {
     if (head_ptr == NULL || *head_ptr == NULL || pos <= 0)
         return 0;
 
     updatePos(*head_ptr);
-    StudentNode* current = *head_ptr;
-    StudentNode* previous = NULL;
-
-    while (current != NULL && current->position != pos)
-    {
-        previous = current;
-        current = current->nextNode_ptr;
-    }
-
-    if (current == NULL)
+    if (getNodeByPos(*head_ptr, pos) == NULL)
         return 0;
 
-    if (previous == NULL)
-        *head_ptr = current->nextNode_ptr;
-    else
-        previous->nextNode_ptr = current->nextNode_ptr;
-
-    destroyNode(current);
+    deleteNodeByPos(head_ptr, pos);
     updatePos(*head_ptr);
     return 1;
 }
 
-// 按学号删除学生节点，并重新计算位置
 int deleteStudentById(StudentNode** head_ptr, int target_id)
 {
     if (head_ptr == NULL || *head_ptr == NULL)
         return 0;
 
-    StudentNode* current = *head_ptr;
-    StudentNode* previous = NULL;
-
-    while (current != NULL && current->info.id != target_id)
-    {
-        previous = current;
-        current = current->nextNode_ptr;
-    }
-
-    if (current == NULL)
+    updatePos(*head_ptr);
+    StudentNode* target = getNodeById(*head_ptr, target_id);
+    if (target == NULL)
         return 0;
 
-    if (previous == NULL)
-        *head_ptr = current->nextNode_ptr;
-    else
-        previous->nextNode_ptr = current->nextNode_ptr;
-
-    destroyNode(current);
+    deleteNodeByPos(head_ptr, target->position);
     updatePos(*head_ptr);
     return 1;
 }
 
-// 内部函数：替换目标节点中的学生信息字符串并更新基本字段
 static int setStudentInfo(StudentNode* target,
                           int id,
                           int roomNum,
@@ -174,25 +113,17 @@ static int setStudentInfo(StudentNode* target,
     if (target == NULL || name == NULL || sex == NULL || stuClass == NULL || birth == NULL || home == NULL)
         return 0;
 
-    target->info.id = id;
-    target->info.stuRoomNum = roomNum;
-    target->info.stuPhone = phone;
-
-    if (!replaceString(&target->info.stuName, name))
-        return 0;
-    if (!replaceString(&target->info.stuSex, sex))
-        return 0;
-    if (!replaceString(&target->info.stuClass, stuClass))
-        return 0;
-    if (!replaceString(&target->info.stuBirth, birth))
-        return 0;
-    if (!replaceString(&target->info.stuHome, home))
-        return 0;
-
+    ModifyID(target, id);
+    ModifyRoomNum(target, roomNum);
+    ModifyPhone(target, phone);
+    ModifyName(target, name);
+    ModifySex(target, sex);
+    ModifyClass(target, stuClass);
+    ModifyBirth(target, birth);
+    ModifyHome(target, home);
     return 1;
 }
 
-// 按位置修改学生信息
 int modifyStudentByPos(StudentNode* head_ptr,
                        int pos,
                        int id,
@@ -204,7 +135,7 @@ int modifyStudentByPos(StudentNode* head_ptr,
                        const char* home,
                        int phone)
 {
-    if (head_ptr == NULL || pos <= 0)
+    if (head_ptr == NULL || pos <= 0 || name == NULL || sex == NULL || stuClass == NULL || birth == NULL || home == NULL)
         return 0;
 
     updatePos(head_ptr);
@@ -215,7 +146,6 @@ int modifyStudentByPos(StudentNode* head_ptr,
     return setStudentInfo(target, id, roomNum, name, sex, stuClass, birth, home, phone);
 }
 
-// 按学号修改学生信息
 int modifyStudentById(StudentNode* head_ptr,
                       int target_id,
                       int id,
@@ -227,7 +157,7 @@ int modifyStudentById(StudentNode* head_ptr,
                       const char* home,
                       int phone)
 {
-    if (head_ptr == NULL)
+    if (head_ptr == NULL || name == NULL || sex == NULL || stuClass == NULL || birth == NULL || home == NULL)
         return 0;
 
     StudentNode* target = getNodeById(head_ptr, target_id);
@@ -237,7 +167,222 @@ int modifyStudentById(StudentNode* head_ptr,
     return setStudentInfo(target, id, roomNum, name, sex, stuClass, birth, home, phone);
 }
 
-// 按位置查询学生节点
+int modifyStudentIdByPos(StudentNode* head_ptr, int pos, int id)
+{
+    if (head_ptr == NULL || pos <= 0)
+        return 0;
+
+    updatePos(head_ptr);
+    StudentNode* target = getNodeByPos(head_ptr, pos);
+    if (target == NULL)
+        return 0;
+
+    ModifyID(target, id);
+    return 1;
+}
+
+int modifyStudentRoomNumByPos(StudentNode* head_ptr, int pos, int roomNum)
+{
+    if (head_ptr == NULL || pos <= 0)
+        return 0;
+
+    updatePos(head_ptr);
+    StudentNode* target = getNodeByPos(head_ptr, pos);
+    if (target == NULL)
+        return 0;
+
+    ModifyRoomNum(target, roomNum);
+    return 1;
+}
+
+int modifyStudentPhoneByPos(StudentNode* head_ptr, int pos, int phone)
+{
+    if (head_ptr == NULL || pos <= 0)
+        return 0;
+
+    updatePos(head_ptr);
+    StudentNode* target = getNodeByPos(head_ptr, pos);
+    if (target == NULL)
+        return 0;
+
+    ModifyPhone(target, phone);
+    return 1;
+}
+
+int modifyStudentNameByPos(StudentNode* head_ptr, int pos, const char* name)
+{
+    if (head_ptr == NULL || pos <= 0 || name == NULL)
+        return 0;
+
+    updatePos(head_ptr);
+    StudentNode* target = getNodeByPos(head_ptr, pos);
+    if (target == NULL)
+        return 0;
+
+    ModifyName(target, name);
+    return 1;
+}
+
+int modifyStudentSexByPos(StudentNode* head_ptr, int pos, const char* sex)
+{
+    if (head_ptr == NULL || pos <= 0 || sex == NULL)
+        return 0;
+
+    updatePos(head_ptr);
+    StudentNode* target = getNodeByPos(head_ptr, pos);
+    if (target == NULL)
+        return 0;
+
+    ModifySex(target, sex);
+    return 1;
+}
+
+int modifyStudentClassByPos(StudentNode* head_ptr, int pos, const char* stuClass)
+{
+    if (head_ptr == NULL || pos <= 0 || stuClass == NULL)
+        return 0;
+
+    updatePos(head_ptr);
+    StudentNode* target = getNodeByPos(head_ptr, pos);
+    if (target == NULL)
+        return 0;
+
+    ModifyClass(target, stuClass);
+    return 1;
+}
+
+int modifyStudentBirthByPos(StudentNode* head_ptr, int pos, const char* birth)
+{
+    if (head_ptr == NULL || pos <= 0 || birth == NULL)
+        return 0;
+
+    updatePos(head_ptr);
+    StudentNode* target = getNodeByPos(head_ptr, pos);
+    if (target == NULL)
+        return 0;
+
+    ModifyBirth(target, birth);
+    return 1;
+}
+
+int modifyStudentHomeByPos(StudentNode* head_ptr, int pos, const char* home)
+{
+    if (head_ptr == NULL || pos <= 0 || home == NULL)
+        return 0;
+
+    updatePos(head_ptr);
+    StudentNode* target = getNodeByPos(head_ptr, pos);
+    if (target == NULL)
+        return 0;
+
+    ModifyHome(target, home);
+    return 1;
+}
+
+int modifyStudentIdById(StudentNode* head_ptr, int target_id, int id)
+{
+    if (head_ptr == NULL)
+        return 0;
+
+    StudentNode* target = getNodeById(head_ptr, target_id);
+    if (target == NULL)
+        return 0;
+
+    ModifyID(target, id);
+    return 1;
+}
+
+int modifyStudentRoomNumById(StudentNode* head_ptr, int target_id, int roomNum)
+{
+    if (head_ptr == NULL)
+        return 0;
+
+    StudentNode* target = getNodeById(head_ptr, target_id);
+    if (target == NULL)
+        return 0;
+
+    ModifyRoomNum(target, roomNum);
+    return 1;
+}
+
+int modifyStudentPhoneById(StudentNode* head_ptr, int target_id, int phone)
+{
+    if (head_ptr == NULL)
+        return 0;
+
+    StudentNode* target = getNodeById(head_ptr, target_id);
+    if (target == NULL)
+        return 0;
+
+    ModifyPhone(target, phone);
+    return 1;
+}
+
+int modifyStudentNameById(StudentNode* head_ptr, int target_id, const char* name)
+{
+    if (head_ptr == NULL || name == NULL)
+        return 0;
+
+    StudentNode* target = getNodeById(head_ptr, target_id);
+    if (target == NULL)
+        return 0;
+
+    ModifyName(target, name);
+    return 1;
+}
+
+int modifyStudentSexById(StudentNode* head_ptr, int target_id, const char* sex)
+{
+    if (head_ptr == NULL || sex == NULL)
+        return 0;
+
+    StudentNode* target = getNodeById(head_ptr, target_id);
+    if (target == NULL)
+        return 0;
+
+    ModifySex(target, sex);
+    return 1;
+}
+
+int modifyStudentClassById(StudentNode* head_ptr, int target_id, const char* stuClass)
+{
+    if (head_ptr == NULL || stuClass == NULL)
+        return 0;
+
+    StudentNode* target = getNodeById(head_ptr, target_id);
+    if (target == NULL)
+        return 0;
+
+    ModifyClass(target, stuClass);
+    return 1;
+}
+
+int modifyStudentBirthById(StudentNode* head_ptr, int target_id, const char* birth)
+{
+    if (head_ptr == NULL || birth == NULL)
+        return 0;
+
+    StudentNode* target = getNodeById(head_ptr, target_id);
+    if (target == NULL)
+        return 0;
+
+    ModifyBirth(target, birth);
+    return 1;
+}
+
+int modifyStudentHomeById(StudentNode* head_ptr, int target_id, const char* home)
+{
+    if (head_ptr == NULL || home == NULL)
+        return 0;
+
+    StudentNode* target = getNodeById(head_ptr, target_id);
+    if (target == NULL)
+        return 0;
+
+    ModifyHome(target, home);
+    return 1;
+}
+
 StudentNode* queryStudentByPos(StudentNode* head_ptr, int pos)
 {
     if (head_ptr == NULL || pos <= 0)
@@ -247,7 +392,6 @@ StudentNode* queryStudentByPos(StudentNode* head_ptr, int pos)
     return getNodeByPos(head_ptr, pos);
 }
 
-// 按学号查询学生节点
 StudentNode* queryStudentById(StudentNode* head_ptr, int target_id)
 {
     if (head_ptr == NULL)
@@ -256,43 +400,60 @@ StudentNode* queryStudentById(StudentNode* head_ptr, int target_id)
     return getNodeById(head_ptr, target_id);
 }
 
-// 打印单个学生基本信息
 void printStudent(const StudentInfo* info)
 {
     if (info == NULL)
         return;
 
-    printf("ID: %d\n", info->id);
-    printf("Room Number: %d\n", info->stuRoomNum);
-    printf("Name: %s\n", info->stuName);
-    printf("Sex: %s\n", info->stuSex);
-    printf("Class: %s\n", info->stuClass);
-    printf("Birthday: %s\n", info->stuBirth);
-    printf("Home Address: %s\n", info->stuHome);
-    printf("Phone: %d\n", info->stuPhone);
+    printf("%-8s %-10s %-12s %-6s %-15s %-12s %-15s %-12s\n",
+           "ID", "Room", "Name", "Sex", "Class", "Birth", "Home", "Phone");
+    printf("%-8d %-10d %-12s %-6s %-15s %-12s %-15s %-12d\n",
+           info->id,
+           info->stuRoomNum,
+           info->stuName ? info->stuName : "",
+           info->stuSex ? info->stuSex : "",
+           info->stuClass ? info->stuClass : "",
+           info->stuBirth ? info->stuBirth : "",
+           info->stuHome ? info->stuHome : "",
+           info->stuPhone);
 }
 
-// 打印一个学生节点信息，含位置编号
 void printStudentNode(const StudentNode* node)
 {
     if (node == NULL)
         return;
 
-    if (node->position > 0)
-        printf("Position: %d\n", node->position);
-
-    printStudent(&node->info);
-    printf("-----------------------------\n");
+    printf("\n");
+    printf("%-8s %-10s %-12s %-6s %-15s %-12s %-15s %-12s\n",
+           "Pos", "ID", "Name", "Sex", "Class", "Birth", "Home", "Phone");
+    printf("----------------------------------------------------------------------------------------\n");
+    printf("%-8d %-10d %-12s %-6s %-15s %-12s %-15s %-12d\n",
+           node->position,
+           node->info.id,
+           node->info.stuName ? node->info.stuName : "",
+           node->info.stuSex ? node->info.stuSex : "",
+           node->info.stuClass ? node->info.stuClass : "",
+           node->info.stuBirth ? node->info.stuBirth : "",
+           node->info.stuHome ? node->info.stuHome : "",
+           node->info.stuPhone);
+    printf("----------------------------------------------------------------------------------------\n");
+    printf("\n");
 }
 
-// 遍历回调：打印当前节点
 static void printStudentCallback(StudentNode* currentNode, void* context)
 {
     (void)context;
-    printStudentNode(currentNode);
+    printf("%-8d %-10d %-12s %-6s %-15s %-12s %-15s %-12d\n",
+           currentNode->position,
+           currentNode->info.id,
+           currentNode->info.stuName ? currentNode->info.stuName : "",
+           currentNode->info.stuSex ? currentNode->info.stuSex : "",
+           currentNode->info.stuClass ? currentNode->info.stuClass : "",
+           currentNode->info.stuBirth ? currentNode->info.stuBirth : "",
+           currentNode->info.stuHome ? currentNode->info.stuHome : "",
+           currentNode->info.stuPhone);
 }
 
-// 打印链表中所有学生信息
 void listStudents(StudentNode* head_ptr)
 {
     if (head_ptr == NULL)
@@ -302,109 +463,38 @@ void listStudents(StudentNode* head_ptr)
     }
 
     updatePos(head_ptr);
+    
+    printf("\n");
+    printf("%-8s %-10s %-12s %-6s %-15s %-12s %-15s %-12s\n",
+           "Pos", "ID", "Name", "Sex", "Class", "Birth", "Home", "Phone");
+    printf("----------------------------------------------------------------------------------------\n");
+    
     IterateOverList(head_ptr, printStudentCallback, NULL);
+    
+    printf("----------------------------------------------------------------------------------------\n");
+    printf("Total: %d student(s)\n", getCount(head_ptr));
+    printf("\n");
 }
 
-// 保存学生链表到文本文件，每条记录按行写入
 int saveStudentListToFile(const char* filename, StudentNode* head_ptr)
 {
     if (filename == NULL)
         return 0;
 
-    FILE* file = fopen(filename, "w");
-    if (file == NULL)
-        return 0;
-
-    StudentNode* current = head_ptr;
-    while (current != NULL)
-    {
-        fprintf(file, "%d\n", current->info.id);
-        fprintf(file, "%d\n", current->info.stuRoomNum);
-        fprintf(file, "%d\n", current->info.stuPhone);
-        fprintf(file, "%s\n", current->info.stuName);
-        fprintf(file, "%s\n", current->info.stuSex);
-        fprintf(file, "%s\n", current->info.stuClass);
-        fprintf(file, "%s\n", current->info.stuBirth);
-        fprintf(file, "%s\n", current->info.stuHome);
-        current = current->nextNode_ptr;
-    }
-
-    int result = (fclose(file) == 0) ? 1 : 0;
-    return result;
+    return save_student_to_file((char*)filename, head_ptr) == 0 ? 1 : 0;
 }
 
-// 从文本文件加载学生链表，替换当前链表内容
 int loadStudentListFromFile(const char* filename, StudentNode** head_ptr)
 {
     if (filename == NULL || head_ptr == NULL)
         return 0;
 
-    FILE* file = fopen(filename, "r");
-    if (file == NULL)
+    StudentNode* newHead = NULL;
+    if (load_student_from_file((char*)filename, &newHead) != 0)
         return 0;
 
-    StudentNode* newHead = NULL;
-    StudentNode* tail = NULL;
-    int id = 0;
-    int roomNum = 0;
-    int phone = 0;
-    char* name = NULL;
-    char* sex = NULL;
-    char* stuClass = NULL;
-    char* birth = NULL;
-    char* home = NULL;
-
-    while (1)
-    {
-        if (!readIntLine(file, &id))
-            break;
-
-        if (!readIntLine(file, &roomNum) ||
-            !readIntLine(file, &phone) ||
-            !readStringLine(file, &name) ||
-            !readStringLine(file, &sex) ||
-            !readStringLine(file, &stuClass) ||
-            !readStringLine(file, &birth) ||
-            !readStringLine(file, &home))
-        {
-            free(name);
-            free(sex);
-            free(stuClass);
-            free(birth);
-            free(home);
-            while (newHead != NULL)
-                newHead = (StudentNode*)destroyNode(newHead);
-            fclose(file);
-            return 0;
-        }
-
-        StudentNode* node = createNode(id, roomNum, name, sex, stuClass, birth, home, phone);
-        free(name);
-        free(sex);
-        free(stuClass);
-        free(birth);
-        free(home);
-
-        if (node == NULL)
-        {
-            while (newHead != NULL)
-                newHead = (StudentNode*)destroyNode(newHead);
-            fclose(file);
-            return 0;
-        }
-
-        if (newHead == NULL)
-            newHead = node;
-        else
-            tail->nextNode_ptr = node;
-
-        tail = node;
-    }
-
-    fclose(file);
-
-    while (*head_ptr != NULL)
-        *head_ptr = (StudentNode*)destroyNode(*head_ptr);
+    if (*head_ptr != NULL)
+        listFree(head_ptr);
 
     *head_ptr = newHead;
     updatePos(*head_ptr);

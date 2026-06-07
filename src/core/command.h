@@ -2,8 +2,8 @@
 // Created by ASUS on 2026/6/4.
 //
 
-#ifndef FOR_REVIEW_COMMAND_H
-#define FOR_REVIEW_COMMAND_H
+#ifndef COMMAND_H
+#define COMMAND_H
 
 #include "student_list.h"
 
@@ -11,7 +11,7 @@
 extern "C" {
 #endif
 
-// 添加学生记录到链表末尾，执行所有参数合法性检查
+// Add a student record to the end of the list
 int addStudent(StudentNode** head_ptr,
                int id,
                int roomNum,
@@ -22,12 +22,12 @@ int addStudent(StudentNode** head_ptr,
                const char* home,
                int phone);
 
-// 按位置删除学生节点
+// Delete a student node by position
 int deleteStudentByPos(StudentNode** head_ptr, int pos);
-// 按学号删除学生节点
+// Delete a student node by student id
 int deleteStudentById(StudentNode** head_ptr, int target_id);
 
-// 按位置修改学生信息
+// Modify student information by position
 int modifyStudentByPos(StudentNode* head_ptr,
                        int pos,
                        int id,
@@ -39,7 +39,17 @@ int modifyStudentByPos(StudentNode* head_ptr,
                        const char* home,
                        int phone);
 
-// 按学号修改学生信息
+// Modify single student field by position
+int modifyStudentIdByPos(StudentNode* head_ptr, int pos, int id);
+int modifyStudentRoomNumByPos(StudentNode* head_ptr, int pos, int roomNum);
+int modifyStudentPhoneByPos(StudentNode* head_ptr, int pos, int phone);
+int modifyStudentNameByPos(StudentNode* head_ptr, int pos, const char* name);
+int modifyStudentSexByPos(StudentNode* head_ptr, int pos, const char* sex);
+int modifyStudentClassByPos(StudentNode* head_ptr, int pos, const char* stuClass);
+int modifyStudentBirthByPos(StudentNode* head_ptr, int pos, const char* birth);
+int modifyStudentHomeByPos(StudentNode* head_ptr, int pos, const char* home);
+
+// Modify student information by student id
 int modifyStudentById(StudentNode* head_ptr,
                       int target_id,
                       int id,
@@ -51,25 +61,35 @@ int modifyStudentById(StudentNode* head_ptr,
                       const char* home,
                       int phone);
 
-// 按位置查询学生节点
+// Modify single student field by student id
+int modifyStudentIdById(StudentNode* head_ptr, int target_id, int id);
+int modifyStudentRoomNumById(StudentNode* head_ptr, int target_id, int roomNum);
+int modifyStudentPhoneById(StudentNode* head_ptr, int target_id, int phone);
+int modifyStudentNameById(StudentNode* head_ptr, int target_id, const char* name);
+int modifyStudentSexById(StudentNode* head_ptr, int target_id, const char* sex);
+int modifyStudentClassById(StudentNode* head_ptr, int target_id, const char* stuClass);
+int modifyStudentBirthById(StudentNode* head_ptr, int target_id, const char* birth);
+int modifyStudentHomeById(StudentNode* head_ptr, int target_id, const char* home);
+
+// Query student node by position
 StudentNode* queryStudentByPos(StudentNode* head_ptr, int pos);
-// 按学号查询学生节点
+// Query student node by student id
 StudentNode* queryStudentById(StudentNode* head_ptr, int target_id);
 
-// 打印单个学生基本信息
+// Print single student information
 void printStudent(const StudentInfo* info);
-// 打印单个学生节点信息，包含位置
+// Print student node information including position
 void printStudentNode(const StudentNode* node);
-// 打印整个学生链表
+// Print all student records in the list
 void listStudents(StudentNode* head_ptr);
 
-// 保存学生链表到文本文件
+// Save student list to a text file
 int saveStudentListToFile(const char* filename, StudentNode* head_ptr);
-// 从文本文件读取学生链表，替换当前链表内容
+// Load student list from a text file and replace the current list
 int loadStudentListFromFile(const char* filename, StudentNode** head_ptr);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif //FOR_REVIEW_COMMAND_H
+#endif //COMMAND_H
