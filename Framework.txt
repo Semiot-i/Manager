@@ -10,7 +10,7 @@ StudentInfoSystem/
 │   │   ├── student_process.c/h   # 学生数据操作
 │   │   ├── student_list.c/h      # 学生链表管理与遍历
 │   │   ├── file_manager.c/h      # 文件读写操作
-│   │   └── command.c/h           # 命令模式(撤销/重做)
+│   │   └── command.c/h           # 命令模式(撤销/重做)与操作
 │   ├── utils/                    # 工具层
 │   │   ├── config.c/h            # 配置文件管理
 │   │   ├── validator.c/h         # 数据验证

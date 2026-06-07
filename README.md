@@ -58,7 +58,7 @@ StudentInfoSystem/
 │   │   ├── student_list.c/h            #    学生链表管理（数据结构）
 │   │   ├── student_process.c/h         #    学生节点操作（增删改）
 │   │   ├── file_manager.c/h            #    文件读写操作
-│   │   └── command.c/h                 #    命令模式（撤销/重做）
+│   │   └── command.c/h                 #    命令模式（撤销/重做）与操作
 │   │
 │   ├── utils/                           # 工具层
 │   │   ├── config.c/h                  #    配置文件管理
@@ -150,6 +150,7 @@ StudentInfoSystem/
 - **command.c/h** - 命令模式
   - 支持撤销/重做功能
   - 命令历史记录管理（待实现）
+  - 操作封装
 
 ---
 
@@ -164,9 +165,10 @@ StudentInfoSystem/
   - 日期格式检查（YYYY-MM-DD）
   - 输入数据合法性验证
   
-- **thread_pool.c/h** - 线程池
-  - 异步任务处理框架（预留）
-  - 多线程并发支持（待实现）
+- **logger.c/h** - 日志记录
+  - 日志级别定义（INFO, WARNING, ERROR）
+  - 日志文件写入
+  - 日志轮转机制（待实现）
 
 ---
 
