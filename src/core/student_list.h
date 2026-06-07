@@ -2,8 +2,8 @@
 // Created by ASUS on 2026/6/4.
 //
 
-#ifndef FOR_REVIEW_LINKED_LIST_H
-#define FOR_REVIEW_LINKED_LIST_H
+#ifndef STUDENTINFOSYSTEM_LINKED_LIST_H
+#define STUDENTINFOSYSTEM_LINKED_LIST_H
 
 typedef struct StudentInfo
 {
@@ -51,4 +51,4 @@ void IterateOverList(StudentNode* head_ptr, void(*visitFunc)(StudentNode* curren
 
 
 
-#endif //FOR_REVIEW_LINKED_LIST_H
+#endif //STUDENTINFOSYSTEM_LINKED_LIST_H

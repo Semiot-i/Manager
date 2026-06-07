@@ -2,8 +2,8 @@
 // Created by ASUS on 2026/6/4.
 //
 
-#ifndef FOR_REVIEW_COMMAND_H
-#define FOR_REVIEW_COMMAND_H
+#ifndef STUDENTINFOSYSTEM_COMMAND_H
+#define STUDENTINFOSYSTEM_COMMAND_H
 
 #include "student_list.h"
 
@@ -72,4 +72,4 @@ int loadStudentListFromFile(const char* filename, StudentNode** head_ptr);
 }
 #endif
 
-#endif //FOR_REVIEW_COMMAND_H
+#endif //STUDENTINFOSYSTEM_COMMAND_H

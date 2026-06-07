@@ -2,8 +2,8 @@
 // Created by ASUS on 2026/6/4.
 //
 
-#ifndef FOR_REVIEW_STUDENT_H
-#define FOR_REVIEW_STUDENT_H
+#ifndef STUDENTINFOSYSTEM_STUDENT_H
+#define STUDENTINFOSYSTEM_STUDENT_H
 
 #include "student_list.h"
 
@@ -38,4 +38,4 @@ void modifyById(StudentNode* *head_ptr,ModifyType M_type,const void* M_value,int
 
 
 
-#endif //FOR_REVIEW_STUDENT_H
+#endif //STUDENTINFOSYSTEM_STUDENT_H
