@@ -1,0 +1,3 @@
+D:/dev/Manager/build/CMakeFiles/StudentInfoSystem.dir
+D:/dev/Manager/build/CMakeFiles/edit_cache.dir
+D:/dev/Manager/build/CMakeFiles/rebuild_cache.dir
